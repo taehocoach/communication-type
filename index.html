@@ -280,28 +280,21 @@ body {
 }
 
 /* Fixed footer buttons */
-.test-footer {
+.test-footer-outer {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   background: var(--cream);
   border-top: 1px solid var(--border);
+}
+.test-footer {
+  max-width: 480px;
+  margin: 0 auto;
   padding: 14px 24px;
   padding-bottom: calc(14px + env(safe-area-inset-bottom));
   display: flex;
   gap: 10px;
-}
-@media (min-width: 480px) {
-  .test-footer {
-    max-width: 480px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 0;
-    border-left: 1px solid var(--border);
-    border-right: 1px solid var(--border);
-  }
 }
 
 .btn-prev, .btn-next {
@@ -601,9 +594,11 @@ body {
 
   <div class="test-body" id="test-body"></div>
 
-  <div class="test-footer">
-    <button class="btn-prev hidden" id="btn-prev" onclick="goPrev()">이전</button>
-    <button class="btn-next" id="btn-next" onclick="goNext()" disabled>다음</button>
+  <div class="test-footer-outer">
+    <div class="test-footer">
+      <button class="btn-prev hidden" id="btn-prev" onclick="goPrev()">이전</button>
+      <button class="btn-next" id="btn-next" onclick="goNext()" disabled>다음</button>
+    </div>
   </div>
 
 </div>
