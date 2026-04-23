@@ -664,7 +664,9 @@ body {
                 font-family="'Noto Sans KR', sans-serif"
                 transform="rotate(90 292 150)">말 꺼냄</text>
           <!-- my dot -->
-          <circle id="my-dot" cx="150" cy="150" r="9"
+          <circle id="my-dot-ring" cx="150" cy="150" r="17"
+                  fill="none" stroke="#E07045" stroke-width="1.5" opacity="0.35"/>
+          <circle id="my-dot" cx="150" cy="150" r="10"
                   fill="#E07045" stroke="white" stroke-width="3"/>
         </svg>
       </div>
@@ -905,6 +907,10 @@ function showResult() {
   dot.setAttribute('cx', dotX);
   dot.setAttribute('cy', dotY);
   dot.setAttribute('fill', t.color);
+  const ring = document.getElementById('my-dot-ring');
+  ring.setAttribute('cx', dotX);
+  ring.setAttribute('cy', dotY);
+  ring.setAttribute('stroke', t.color);
 
   /* score bars */
   const haPct = Math.round((haScore - 10) / 40 * 100);
@@ -913,8 +919,8 @@ function showResult() {
   document.getElementById('ha-bar').style.background = t.color;
   document.getElementById('rd-bar').style.width    = rdPct + '%';
   document.getElementById('rd-bar').style.background = t.color;
-  document.getElementById('ha-val').textContent = `${haScore}점 (${haHigh?'높음':'낮음'})`;
-  document.getElementById('rd-val').textContent = `${rdScore}점 (${rdHigh?'높음':'낮음'})`;
+  document.getElementById('ha-val').textContent = `${haScore}점 / 50점`;
+  document.getElementById('rd-val').textContent = `${rdScore}점 / 50점`;
 
   /* quote + desc */
   document.getElementById('rc-quote').textContent = t.quote;
