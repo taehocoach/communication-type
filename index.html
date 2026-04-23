@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>나는 어떤 소통 유형인가?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --coral:       #E07045;
+  --coral-dark:  #C05830;
+  --coral-light: #F5CEB8;
+  --coral-pale:  #FDF6F1;
+  --cream:       #F9F5F1;
+  --white:       #FFFFFF;
+  --border:      #EDE0D8;
+  --text-dark:   #2C2420;
+  --text-mid:    #6B5C54;
+  --text-light:  #AAA09A;
+  --teal:        #5B8A7A;
+  --teal-bg:     #EBF5F0;
+  --purple:      #6B6A8A;
+  --purple-bg:   #F4F3F8;
+  --amber:       #8A6A30;
+  --amber-bg:    #F9F3E8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Screen toggle ── */
+.screen { display: none; }
+.screen.active { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+
+/* ─────────────────────────────────────────
+   INTRO
+───────────────────────────────────────── */
+.intro-wrap {
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 24px 48px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--coral);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.intro-title {
+  font-family: 'Gowun Dodum', sans-serif;
+  font-size: clamp(30px, 8vw, 38px);
+  line-height: 1.2;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.intro-subtitle {
+  font-size: 14px;
+  color: var(--text-mid);
+  margin-bottom: 36px;
+}
+
+.name-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
+.name-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  font-size: 16px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--white);
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 32px;
+}
+.name-input:focus { border-color: var(--coral); }
+.name-input::placeholder { color: var(--text-light); }
+
+.info-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 4px 0;
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.4;
+}
+.info-row + .info-row { border-top: 1px solid var(--border); }
+.info-icon { font-size: 17px; flex-shrink: 0; }
+
+.notice-box {
+  background: #FFF7F4;
+  border: 1px solid var(--coral-light);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+.notice-tag {
+  display: inline-block;
+  background: var(--coral-pale);
+  color: var(--coral-dark);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+
+.btn-start {
+  width: 100%;
+  padding: 18px;
+  background: var(--coral);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 17px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: auto;
+  letter-spacing: 0.02em;
+}
+.btn-start:active { background: var(--coral-dark); transform: scale(0.98); }
+
+
+/* ─────────────────────────────────────────
+   TEST
+───────────────────────────────────────── */
+#screen-test { background: var(--cream); }
+
+.test-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--cream);
+  padding: 20px 24px 0;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.progress-page {
+  font-size: 12px;
+  color: var(--text-light);
+}
+.progress-count {
+  font-size: 12px;
+  color: var(--text-mid);
+  font-weight: 500;
+}
+
+.progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--coral);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+
+.test-body {
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 4px 24px 140px;
+}
+
+.question-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 20px 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.question-card.answered { border-color: var(--coral-light); }
+
+.q-num {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.q-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  word-break: keep-all;
+}
+
+.scale-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.scale-end-label {
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+.scale-row {
+  display: flex;
+  gap: 6px;
+}
+
+.scale-btn {
+  flex: 1;
+  height: 46px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--text-mid);
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s;
+  touch-action: manipulation;
+}
+.scale-btn:active { transform: scale(0.93); }
+.scale-btn.selected {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: white;
+  font-weight: 500;
+}
+
+/* Fixed footer buttons */
+.test-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  display: flex;
+  gap: 10px;
+}
+@media (min-width: 480px) {
+  .test-footer {
+    max-width: 480px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+}
+
+.btn-prev, .btn-next {
+  flex: 1;
+  height: 54px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  touch-action: manipulation;
+}
+
+.btn-prev {
+  background: var(--white);
+  color: var(--text-mid);
+  border: 1px solid var(--border);
+}
+.btn-prev:active { background: var(--border); }
+.btn-prev.hidden { visibility: hidden; pointer-events: none; }
+
+.btn-next {
+  background: var(--coral);
+  color: white;
+}
+.btn-next:disabled {
+  background: var(--border);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+.btn-next:not(:disabled):active { background: var(--coral-dark); transform: scale(0.98); }
+
+
+/* ─────────────────────────────────────────
+   RESULT
+───────────────────────────────────────── */
+#screen-result { background: var(--cream); }
+
+.result-scroll {
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  flex: 1;
+}
+
+.result-heading {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-mid);
+  margin-bottom: 16px;
+}
+
+/* ─ Card that gets captured ─ */
+#result-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.rc-header {
+  padding: 28px 24px 24px;
+  text-align: center;
+}
+.rc-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.rc-type-name {
+  font-family: 'Gowun Dodum', sans-serif;
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+.rc-type-sub {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* Quadrant chart */
+.rc-chart {
+  padding: 0 24px 4px;
+}
+.rc-chart svg { display: block; width: 100%; }
+
+/* Score bar */
+.rc-scores {
+  display: flex;
+  gap: 8px;
+  padding: 0 24px 20px;
+}
+.score-item {
+  flex: 1;
+  background: var(--cream);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.score-label {
+  font-size: 10px;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.score-bar-bg {
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--coral);
+}
+.score-val {
+  font-size: 11px;
+  color: var(--text-mid);
+  font-weight: 500;
+}
+
+.rc-quote {
+  margin: 0 24px 18px;
+  padding: 14px 18px;
+  background: var(--coral-pale);
+  border-left: 3px solid var(--coral);
+  border-radius: 0 12px 12px 0;
+  font-size: 14px;
+  color: var(--text-mid);
+  font-style: italic;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.rc-desc {
+  padding: 0 24px 24px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-mid);
+  word-break: keep-all;
+}
+
+.rc-brand {
+  border-top: 1px solid var(--border);
+  padding: 12px 24px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+}
+
+/* Action buttons */
+.result-btns {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.btn-dl {
+  flex: 1;
+  height: 52px;
+  background: var(--coral);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-dl:active { background: var(--coral-dark); transform: scale(0.98); }
+
+.btn-retry {
+  flex: 1;
+  height: 52px;
+  background: var(--white);
+  color: var(--text-mid);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-retry:active { background: var(--border); }
+
+/* Contact box */
+.contact-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.contact-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-light);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-dark);
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.contact-row:last-of-type { margin-bottom: 14px; }
+.contact-row a { color: var(--text-dark); text-decoration: none; }
+.contact-row a:hover { color: var(--coral); }
+.contact-brand {
+  font-size: 12px;
+  color: var(--coral);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: var(--text-light);
+  text-align: center;
+  line-height: 1.7;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     INTRO SCREEN
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-intro">
+  <div class="intro-wrap">
+
+    <div class="brand-label">김태호 심리코칭센터</div>
+
+    <h1 class="intro-title">나는 어떤<br>소통 유형인가?</h1>
+    <p class="intro-subtitle">나의 소통 패턴을 파악하는 자가진단</p>
+
+    <label class="name-label" for="user-name">이름 또는 별명 (선택)</label>
+    <input class="name-input" id="user-name" type="text" placeholder="홍길동" maxlength="10">
+
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-icon">⏱</span>
+        <span>약 5분 소요 &nbsp;·&nbsp; 총 20문항</span>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">✓</span>
+        <span>맞고 틀린 답이 없습니다</span>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">✓</span>
+        <span>첫 번째 떠오르는 대로 솔직하게 답해주세요</span>
+      </div>
+    </div>
+
+    <div class="notice-box">
+      <div class="notice-tag">참고용 약식 검사</div>
+      이 검사는 표준화된 심리검사가 아닌, 자기 탐색을 위한 간이 도구입니다. 결과는 소통 경향을 파악하는 참고 자료로만 활용하시고, 어떤 유형이 더 좋거나 나쁜 것은 없습니다.
+    </div>
+
+    <button class="btn-start" onclick="startTest()">검사 시작하기</button>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     TEST SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="screen-test">
+
+  <div class="test-top">
+    <div class="progress-row">
+      <span class="progress-page" id="progress-text">1 / 4</span>
+      <span class="progress-count" id="answered-count">0 / 5 응답</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:25%"></div>
+    </div>
+  </div>
+
+  <div class="test-body" id="test-body"></div>
+
+  <div class="test-footer">
+    <button class="btn-prev hidden" id="btn-prev" onclick="goPrev()">이전</button>
+    <button class="btn-next" id="btn-next" onclick="goNext()" disabled>다음</button>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     RESULT SCREEN
+══════════════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <div class="result-scroll">
+
+    <p class="result-heading" id="result-heading">당신의 소통 유형은</p>
+
+    <div id="result-card">
+
+      <div class="rc-header" id="rc-header">
+        <div class="rc-badge" id="rc-badge">공감형</div>
+        <div class="rc-type-name" id="rc-type-name">공감형</div>
+        <div class="rc-type-sub" id="rc-type-sub">RD 높음 × HA 낮음</div>
+      </div>
+
+      <div class="rc-chart">
+        <svg id="quad-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- quadrant fills -->
+          <rect x="0"   y="0"   width="150" height="150" fill="#EBF5F0"/>
+          <rect x="150" y="0"   width="150" height="150" fill="#FDF3EC"/>
+          <rect x="0"   y="150" width="150" height="150" fill="#F4F3F8"/>
+          <rect x="150" y="150" width="150" height="150" fill="#F9F3E8"/>
+          <!-- axes -->
+          <line x1="0" y1="150" x2="300" y2="150" stroke="#D8CFC8" stroke-width="0.8"/>
+          <line x1="150" y1="0" x2="150" y2="300" stroke="#D8CFC8" stroke-width="0.8"/>
+          <!-- type labels -->
+          <text x="75"  y="75"  text-anchor="middle" dominant-baseline="central"
+                font-size="12" fill="#5B8A7A"
+                font-family="'Noto Sans KR', sans-serif" font-weight="500">눈치형</text>
+          <text x="225" y="75"  text-anchor="middle" dominant-baseline="central"
+                font-size="12" fill="#C85F30"
+                font-family="'Noto Sans KR', sans-serif" font-weight="500">공감형</text>
+          <text x="75"  y="225" text-anchor="middle" dominant-baseline="central"
+                font-size="12" fill="#6B6A8A"
+                font-family="'Noto Sans KR', sans-serif" font-weight="500">단절형</text>
+          <text x="225" y="225" text-anchor="middle" dominant-baseline="central"
+                font-size="12" fill="#8A6A30"
+                font-family="'Noto Sans KR', sans-serif" font-weight="500">돌직구형</text>
+          <!-- axis end labels -->
+          <text x="150" y="11"  text-anchor="middle"
+                font-size="8" fill="#B0A8A0"
+                font-family="'Noto Sans KR', sans-serif">감정에 민감 ↑</text>
+          <text x="150" y="293" text-anchor="middle"
+                font-size="8" fill="#B0A8A0"
+                font-family="'Noto Sans KR', sans-serif">사실에 집중 ↓</text>
+          <text x="8" y="150" text-anchor="middle" dominant-baseline="central"
+                font-size="8" fill="#B0A8A0"
+                font-family="'Noto Sans KR', sans-serif"
+                transform="rotate(-90 8 150)">말 삼킴</text>
+          <text x="292" y="150" text-anchor="middle" dominant-baseline="central"
+                font-size="8" fill="#B0A8A0"
+                font-family="'Noto Sans KR', sans-serif"
+                transform="rotate(90 292 150)">말 꺼냄</text>
+          <!-- my dot -->
+          <circle id="my-dot" cx="150" cy="150" r="9"
+                  fill="#E07045" stroke="white" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <div class="rc-scores" id="rc-scores">
+        <div class="score-item">
+          <div class="score-label">위험회피 (HA)</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" id="ha-bar"></div></div>
+          <div class="score-val" id="ha-val">—</div>
+        </div>
+        <div class="score-item">
+          <div class="score-label">사회적 민감성 (RD)</div>
+          <div class="score-bar-bg"><div class="score-bar-fill" id="rd-bar"></div></div>
+          <div class="score-val" id="rd-val">—</div>
+        </div>
+      </div>
+
+      <div class="rc-quote" id="rc-quote"></div>
+      <div class="rc-desc"  id="rc-desc"></div>
+
+      <div class="rc-brand">김태호 심리코칭센터</div>
+
+    </div><!-- /#result-card -->
+
+    <div class="result-btns">
+      <button class="btn-dl"    onclick="downloadImg()">📥 이미지 저장</button>
+      <button class="btn-retry" onclick="retryTest()">↩ 다시 하기</button>
+    </div>
+
+    <div class="contact-box">
+      <div class="contact-title">TCI 공식 검사 문의</div>
+      <div class="contact-row">📞 <a href="tel:01086058574">010-8605-8574</a></div>
+      <div class="contact-row">📧 <a href="mailto:coachinginlife@naver.com">coachinginlife@naver.com</a></div>
+      <div class="contact-brand">김태호 심리코칭센터</div>
+    </div>
+
+    <p class="disclaimer">
+      ※ 이 결과는 참고용 약식 검사이며 공식 TCI 진단이 아닙니다.<br>
+      어떤 유형이 더 좋거나 나쁜 것은 없습니다.
+    </p>
+
+  </div>
+</div>
+
+
+<script>
+/* ─────────────── 문항 ─────────────── */
+const QS = [
+  /* HA 1–10 */
+  "하고 싶은 말이 있어도 상대방의 반응이 걱정되면 그냥 참는 편이다.",
+  "갈등이 생길 것 같으면 먼저 그 상황을 피하려고 한다.",
+  "말을 꺼내기 전에 '잘못 말하면 어쩌지'라는 생각이 자주 든다.",
+  "부탁이나 거절을 해야 할 때 오래 망설이는 편이다.",
+  "상대방이 기분 나빠할 것 같으면 솔직한 내 의견을 숨긴다.",
+  "중요한 대화를 앞두고 미리 걱정이 되거나 잠이 안 올 때가 있다.",
+  "내가 먼저 말을 꺼내서 관계가 불편해지느니 그냥 넘어가는 게 낫다고 생각한다.",
+  "갈등 상황에서 '나중에 얘기하자'고 미루는 경우가 많다.",
+  "회의나 모임에서 반대 의견이 있어도 혼자 삼키는 경우가 많다.",
+  "상대방이 화났을 때 일단 내가 먼저 사과하거나 분위기를 맞추려 한다.",
+  /* RD 11–20 */
+  "상대방의 표정이나 목소리 톤이 조금만 바뀌어도 금방 알아챈다.",
+  "누군가 힘들어 보이면 먼저 말을 걸거나 신경이 쓰인다.",
+  "대화할 때 상대방이 어떤 감정인지 느끼면서 듣는 편이다.",
+  "칭찬을 들으면 기분이 좋아지고 일이 더 잘 되는 것 같다.",
+  "가까운 사람이 나에게 실망했다는 느낌이 들면 하루 종일 마음에 걸린다.",
+  "상대방의 이야기를 들을 때 그 감정이 나에게도 전해지는 느낌이 있다.",
+  "차갑거나 단호한 말투로 이야기하는 것이 불편하다.",
+  "분위기가 어색하거나 냉랭하면 그걸 해소하려고 노력하는 편이다.",
+  "비판을 들었을 때 내용보다 그 말투나 감정이 더 오래 남는다.",
+  "관계가 소원해지거나 연락이 뜸해지면 내가 뭘 잘못한 건 아닐까 생각한다."
+];
+
+/* ─────────────── 유형 데이터 ─────────────── */
+const TYPES = {
+  '눈치형': {
+    sub:   'RD 높음 × HA 높음',
+    color: '#5B8A7A',
+    bg:    '#EBF5F0',
+    quote: '"말하려고 했는데… 때가 아닌 것 같아서요."',
+    desc:  '상대방의 감정과 분위기를 정확하게 읽지만, 그것을 말로 꺼내는 데 부담을 느끼는 유형입니다. 갈등을 피하려는 마음에 자신의 생각을 삼키다 보니, 속으로 많은 것을 쌓아두는 경향이 있습니다.'
+  },
+  '공감형': {
+    sub:   'RD 높음 × HA 낮음',
+    color: '#C85F30',
+    bg:    '#FDF3EC',
+    quote: '"솔직히 말하는데, 왜 그게 문제예요?"',
+    desc:  '상대방의 감정을 빠르게 읽고, 자신의 생각도 편하게 꺼낼 수 있는 유형입니다. 대화를 관계의 연결 수단으로 여기며, 갈등 상황에서도 직접 대화로 해결하려는 경향이 있습니다.'
+  },
+  '단절형': {
+    sub:   'RD 낮음 × HA 높음',
+    color: '#6B6A8A',
+    bg:    '#F4F3F8',
+    quote: '"별로 할 말이 없어요."',
+    desc:  '감정 표현이나 자기 개방이 낯설고, 필요한 말만 하는 경향이 있는 유형입니다. 갈등 상황에서 침묵이나 회피로 반응하다 보니, 가까운 관계에서도 거리감이 생기기 쉽습니다.'
+  },
+  '돌직구형': {
+    sub:   'RD 낮음 × HA 낮음',
+    color: '#8A6A30',
+    bg:    '#F9F3E8',
+    quote: '"틀린 말 한 거 없잖아요, 뭐가 문제예요?"',
+    desc:  '생각한 것을 바로 말하는 편이며, 감정보다는 사실과 내용에 집중하는 유형입니다. 대화에서 결론을 빨리 내리려 하고, 자신의 말이 상대에게 어떻게 들릴지는 크게 의식하지 않습니다.'
+  }
+};
+
+/* ─────────────── 상태 ─────────────── */
+let page    = 0;
+let answers = new Array(20).fill(null);
+let uname   = '';
+
+/* ─────────────── 화면 전환 ─────────────── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ─────────────── 검사 시작 ─────────────── */
+function startTest() {
+  uname   = document.getElementById('user-name').value.trim();
+  page    = 0;
+  answers = new Array(20).fill(null);
+  renderPage();
+  showScreen('screen-test');
+}
+
+/* ─────────────── 페이지 렌더 ─────────────── */
+function renderPage() {
+  const start = page * 5;
+  const qs    = QS.slice(start, start + 5);
+
+  /* progress */
+  document.getElementById('progress-text').textContent = `${page + 1} / 4`;
+  document.getElementById('progress-fill').style.width = `${(page + 1) / 4 * 100}%`;
+
+  /* questions */
+  const body = document.getElementById('test-body');
+  body.innerHTML = '';
+
+  qs.forEach((q, i) => {
+    const gi  = start + i;
+    const sel = answers[gi];
+    const div = document.createElement('div');
+    div.className = 'question-card' + (sel !== null ? ' answered' : '');
+    div.id = `qc-${gi}`;
+    div.innerHTML = `
+      <div class="q-num">${gi + 1}</div>
+      <div class="q-text">${q}</div>
+      <div class="scale-ends">
+        <span class="scale-end-label">전혀 아니다</span>
+        <span class="scale-end-label">매우 그렇다</span>
+      </div>
+      <div class="scale-row">
+        ${[1,2,3,4,5].map(v =>
+          `<button class="scale-btn${sel===v?' selected':''}"
+            onclick="pick(${gi},${v})">${v}</button>`
+        ).join('')}
+      </div>`;
+    body.appendChild(div);
+  });
+
+  updateFooter();
+}
+
+/* ─────────────── 답 선택 ─────────────── */
+function pick(gi, val) {
+  answers[gi] = val;
+  /* update card */
+  const card = document.getElementById(`qc-${gi}`);
+  card.classList.add('answered');
+  card.querySelectorAll('.scale-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i + 1 === val);
+  });
+  updateFooter();
+}
+
+/* ─────────────── 하단 버튼 상태 ─────────────── */
+function updateFooter() {
+  const start       = page * 5;
+  const slice       = answers.slice(start, start + 5);
+  const done        = slice.filter(a => a !== null).length;
+  const allDone     = done === 5;
+  const isLast      = page === 3;
+
+  document.getElementById('answered-count').textContent = `${done} / 5 응답`;
+  document.getElementById('btn-next').disabled          = !allDone;
+  document.getElementById('btn-next').textContent       = isLast ? '결과 보기' : '다음';
+
+  const prevBtn = document.getElementById('btn-prev');
+  page === 0 ? prevBtn.classList.add('hidden') : prevBtn.classList.remove('hidden');
+}
+
+/* ─────────────── 이동 ─────────────── */
+function goNext() {
+  if (page < 3) { page++; renderPage(); window.scrollTo(0,0); }
+  else          { showResult(); }
+}
+function goPrev() {
+  if (page > 0) { page--; renderPage(); window.scrollTo(0,0); }
+}
+
+/* ─────────────── 결과 계산 ─────────────── */
+function showResult() {
+  const haScore = answers.slice(0,10).reduce((s,v) => s+v, 0);
+  const rdScore = answers.slice(10,20).reduce((s,v) => s+v, 0);
+
+  const haHigh  = haScore >= 30;
+  const rdHigh  = rdScore >= 30;
+
+  let typeName;
+  if ( haHigh &&  rdHigh) typeName = '눈치형';
+  if (!haHigh &&  rdHigh) typeName = '공감형';
+  if ( haHigh && !rdHigh) typeName = '단절형';
+  if (!haHigh && !rdHigh) typeName = '돌직구형';
+
+  const t = TYPES[typeName];
+
+  /* heading */
+  document.getElementById('result-heading').textContent =
+    uname ? `${uname}님의 소통 유형은` : '당신의 소통 유형은';
+
+  /* badge + name */
+  const badge = document.getElementById('rc-badge');
+  badge.textContent       = typeName;
+  badge.style.background  = t.bg;
+  badge.style.color       = t.color;
+
+  document.getElementById('rc-type-name').textContent = typeName;
+  document.getElementById('rc-type-name').style.color = t.color;
+  document.getElementById('rc-type-sub').textContent  = t.sub;
+  document.getElementById('rc-header').style.background = t.bg;
+
+  /* dot position in 300×300 SVG
+     x: HA높음(score=50)→left(0), HA낮음(score=10)→right(300)
+     y: RD높음(score=50)→top(0),  RD낮음(score=10)→bottom(300)  */
+  const dotX = Math.round((50 - haScore) / 40 * 280 + 10);
+  const dotY = Math.round((50 - rdScore) / 40 * 280 + 10);
+  const dot  = document.getElementById('my-dot');
+  dot.setAttribute('cx', dotX);
+  dot.setAttribute('cy', dotY);
+  dot.setAttribute('fill', t.color);
+
+  /* score bars */
+  const haPct = Math.round((haScore - 10) / 40 * 100);
+  const rdPct = Math.round((rdScore - 10) / 40 * 100);
+  document.getElementById('ha-bar').style.width    = haPct + '%';
+  document.getElementById('ha-bar').style.background = t.color;
+  document.getElementById('rd-bar').style.width    = rdPct + '%';
+  document.getElementById('rd-bar').style.background = t.color;
+  document.getElementById('ha-val').textContent = `${haScore}점 (${haHigh?'높음':'낮음'})`;
+  document.getElementById('rd-val').textContent = `${rdScore}점 (${rdHigh?'높음':'낮음'})`;
+
+  /* quote + desc */
+  document.getElementById('rc-quote').textContent = t.quote;
+  document.getElementById('rc-desc').textContent  = t.desc;
+
+  showScreen('screen-result');
+}
+
+/* ─────────────── 이미지 저장 ─────────────── */
+function downloadImg() {
+  const card = document.getElementById('result-card');
+  const btn  = document.querySelector('.btn-dl');
+  btn.textContent = '저장 중…';
+  btn.disabled    = true;
+
+  html2canvas(card, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+    logging: false
+  }).then(canvas => {
+    const typeName = document.getElementById('rc-badge').textContent;
+    const link     = document.createElement('a');
+    link.download  = `소통유형_${typeName}.png`;
+    link.href      = canvas.toDataURL('image/png');
+    link.click();
+  }).finally(() => {
+    btn.textContent = '📥 이미지 저장';
+    btn.disabled    = false;
+  });
+}
+
+/* ─────────────── 다시 하기 ─────────────── */
+function retryTest() {
+  answers = new Array(20).fill(null);
+  page    = 0;
+  showScreen('screen-intro');
+}
+</script>
+</body>
+</html>
